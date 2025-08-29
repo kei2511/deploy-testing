@@ -322,7 +322,7 @@ export default function Dashboard() {
             <div className="p-4 sm:p-6">
               {questionnaires.length === 0 ? (
                 <p className="text-black text-center py-6 sm:py-8 text-sm sm:text-base">Belum ada kuesioner dibuat</p>
-{{ ... }} 
+) : ( 
                 <div className="space-y-3">
                   {questionnaires.map((questionnaire) => (
                     <div key={questionnaire.id} className="border rounded-lg p-3 sm:p-4 hover:shadow-md transition-shadow">
