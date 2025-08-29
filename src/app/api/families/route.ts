@@ -11,8 +11,10 @@ interface CreateFamilyRequest {
 // POST /api/families - Create new family member
 export async function POST(request: NextRequest) {
   try {
+    console.log('=== POST /api/families called ===');
     const body = await request.json();
     console.log('Request body:', body);
+    console.log('Headers:', Object.fromEntries(request.headers.entries()));
     
     const { name, gender, age, relationship } = body;
 
@@ -51,6 +53,7 @@ export async function POST(request: NextRequest) {
       );
     }
 
+    console.log('Creating family with data:', { name, gender, age: ageNum, relationship });
     const family = await prisma.family.create({
       data: {
         name: String(name),
@@ -59,15 +62,21 @@ export async function POST(request: NextRequest) {
         relationship: String(relationship)
       }
     });
+    console.log('Family created successfully:', family);
 
     return NextResponse.json(family, { status: 201 });
   } catch (error) {
+    console.error('=== ERROR in POST /api/families ===');
     console.error('Error creating family:', error);
+    console.error('Error type:', error instanceof Error ? error.constructor.name : typeof error);
+    console.error('Error message:', error instanceof Error ? error.message : String(error));
     console.error('Error stack:', error instanceof Error ? error.stack : 'No stack');
+    
     return NextResponse.json(
       { 
         error: 'Internal server error',
-        message: error instanceof Error ? error.message : 'Unknown error'
+        message: error instanceof Error ? error.message : 'Unknown error',
+        type: error instanceof Error ? error.constructor.name : typeof error
       },
       { status: 500 }
     );
