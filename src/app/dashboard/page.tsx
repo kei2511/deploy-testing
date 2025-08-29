@@ -276,6 +276,12 @@ export default function Dashboard() {
               {patients.length > 0 && (
                 <div className="mt-4 space-y-2">
                   <button
+                    onClick={() => router.push('/families')}
+                    className="w-full bg-purple-600 text-white py-2.5 px-4 rounded-md hover:bg-purple-700 text-sm sm:text-base"
+                  >
+                    Kelola Data Keluarga
+                  </button>
+                  <button
                     onClick={() => router.push('/screening/new')}
                     className="w-full bg-blue-600 text-white py-2.5 px-4 rounded-md hover:bg-blue-700 text-sm sm:text-base"
                   >
@@ -297,18 +303,26 @@ export default function Dashboard() {
             <div className="px-4 sm:px-6 py-3 sm:py-4 border-b border-gray-200">
               <div className="flex justify-between items-center">
                 <h2 className="text-lg font-semibold text-black">Template Kuesioner</h2>
-                <button
-                  onClick={() => router.push('/questionnaires/new')}
-                  className="bg-green-600 text-white px-3 py-1.5 rounded text-sm hover:bg-green-700 transition-colors"
-                >
-                  Buat Kuesioner
-                </button>
+                <div className="flex space-x-2">
+                  <button
+                    onClick={() => router.push('/questionnaires/new')}
+                    className="bg-green-600 text-white px-3 py-1.5 rounded text-sm hover:bg-green-700 transition-colors"
+                  >
+                    Buat Kuesioner
+                  </button>
+                  <button
+                    onClick={() => router.push('/families')}
+                    className="bg-purple-600 text-white px-3 py-1.5 rounded text-sm hover:bg-purple-700 transition-colors"
+                  >
+                    Kelola Data Keluarga
+                  </button>
+                </div>
               </div>
             </div>
             <div className="p-4 sm:p-6">
               {questionnaires.length === 0 ? (
                 <p className="text-black text-center py-6 sm:py-8 text-sm sm:text-base">Belum ada kuesioner dibuat</p>
-              ) : (
+{{ ... }} 
                 <div className="space-y-3">
                   {questionnaires.map((questionnaire) => (
                     <div key={questionnaire.id} className="border rounded-lg p-3 sm:p-4 hover:shadow-md transition-shadow">
