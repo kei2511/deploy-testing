@@ -35,20 +35,18 @@ export async function POST(request: NextRequest) {
       );
     }
 
-    // Validasi relationship
-    const validRelationships = ['anak', 'orang tua', 'saudara kandung', 'yang lain'];
-    if (!validRelationships.includes(relationship.toLowerCase())) {
+    // Validasi relationship - accept any string
+    if (!relationship || relationship.trim() === '') {
       return NextResponse.json(
-        { error: 'Invalid relationship value' },
+        { error: 'Relationship is required' },
         { status: 400 }
       );
     }
 
-    // Validasi gender
-    const validGenders = ['laki-laki', 'perempuan', 'male', 'female'];
-    if (!validGenders.includes(gender.toLowerCase())) {
+    // Validasi gender - accept any string
+    if (!gender || gender.trim() === '') {
       return NextResponse.json(
-        { error: 'Invalid gender value' },
+        { error: 'Gender is required' },
         { status: 400 }
       );
     }

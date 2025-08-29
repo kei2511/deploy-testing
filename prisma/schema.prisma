@@ -73,10 +73,10 @@ model ScreeningResult {
 // Model untuk Data Keluarga/Anggota Keluarga yang Merawat
 model Family {
   id                    String   @id @default(cuid())
-  name                  String   // Nama keluarga/anggota keluarga yang merawat
-  gender                String   // Jenis kelamin
-  age                   Int      // Umur anggota keluarga yang merawat (angka saja)
-  relationship          String   // Hubungan dengan pasien: anak, orang tua, saudara kandung, atau yang lain
+  name                  String
+  gender                String
+  age                   Int
+  relationship          String
   createdAt             DateTime @default(now())
   updatedAt             DateTime @updatedAt
 }
