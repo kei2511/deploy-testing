@@ -11,22 +11,24 @@ interface CreateFamilyRequest {
 // POST /api/families - Create new family member
 export async function POST(request: NextRequest) {
   try {
-    const body: CreateFamilyRequest = await request.json();
+    const body = await request.json();
+    console.log('Request body:', body);
     
     const { name, gender, age, relationship } = body;
 
     // Validasi input
-    if (!name || !gender || !age || !relationship) {
+    if (!name || !gender || age === undefined || age === null || !relationship) {
       return NextResponse.json(
-        { error: 'All fields are required' },
+        { error: 'All fields are required', received: { name, gender, age, relationship } },
         { status: 400 }
       );
     }
 
     // Validasi age harus angka positif
-    if (typeof age !== 'number' || age <= 0) {
+    const ageNum = Number(age);
+    if (isNaN(ageNum) || ageNum <= 0) {
       return NextResponse.json(
-        { error: 'Age must be a positive number' },
+        { error: 'Age must be a positive number', receivedAge: age },
         { status: 400 }
       );
     }
@@ -51,18 +53,22 @@ export async function POST(request: NextRequest) {
 
     const family = await prisma.family.create({
       data: {
-        name,
-        gender,
-        age,
-        relationship
+        name: String(name),
+        gender: String(gender),
+        age: ageNum,
+        relationship: String(relationship)
       }
     });
 
     return NextResponse.json(family, { status: 201 });
   } catch (error) {
     console.error('Error creating family:', error);
+    console.error('Error stack:', error instanceof Error ? error.stack : 'No stack');
     return NextResponse.json(
-      { error: 'Internal server error' },
+      { 
+        error: 'Internal server error',
+        message: error instanceof Error ? error.message : 'Unknown error'
+      },
       { status: 500 }
     );
   }
