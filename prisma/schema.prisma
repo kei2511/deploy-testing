@@ -37,6 +37,7 @@ model Caregiver {
   doctor                Doctor   @relation(fields: [doctorId], references: [id])
   doctorId              String
   patients              Patient[]
+  results               ScreeningResult[]
   createdAt             DateTime @default(now())
   updatedAt             DateTime @updatedAt
 }
@@ -47,6 +48,13 @@ enum HubunganDenganPasien {
   OrangTua
   SaudaraKandung
   Lainnya
+}
+
+// Enum untuk jenis kuesioner
+enum JenisKuesioner {
+  Pasien
+  Caregiver
+  Keduanya
 }
 
 // Model untuk Pasien
@@ -69,23 +77,26 @@ model Patient {
 
 // Model untuk Template Kuesioner
 model QuestionnaireTemplate {
-  id          String   @id @default(cuid())
-  title       String
-  description String?
-  doctor      Doctor   @relation(fields: [doctorId], references: [id])
-  doctorId    String
-  questions   Json     // Menyimpan struktur pertanyaan & jawaban sebagai JSON
-  resultTiers Json     // Menyimpan definisi hasil sebagai JSON
-  results     ScreeningResult[]
-  createdAt   DateTime @default(now())
-  updatedAt   DateTime @updatedAt
+  id              String         @id @default(cuid())
+  title           String
+  description     String?
+  jenis_kuesioner JenisKuesioner @default(Pasien)
+  doctor          Doctor         @relation(fields: [doctorId], references: [id])
+  doctorId        String
+  questions       Json           // Menyimpan struktur pertanyaan & jawaban sebagai JSON
+  resultTiers     Json           // Menyimpan definisi hasil sebagai JSON
+  results         ScreeningResult[]
+  createdAt       DateTime       @default(now())
+  updatedAt       DateTime       @updatedAt
 }
 
 // Model untuk Hasil Skrining
 model ScreeningResult {
   id          String    @id @default(cuid())
-  patient     Patient   @relation(fields: [patientId], references: [id])
-  patientId   String
+  patient     Patient?  @relation(fields: [patientId], references: [id])
+  patientId   String?
+  caregiver   Caregiver? @relation(fields: [caregiverId], references: [id])
+  caregiverId String?
   doctor      Doctor    @relation(fields: [doctorId], references: [id])
   doctorId    String
   template    QuestionnaireTemplate @relation(fields: [templateId], references: [id])
